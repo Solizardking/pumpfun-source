@@ -1,5 +1,6 @@
 use crate::*;
 #[account]
+#[derive(Debug)]
 pub struct GlobalVolumeAccumulator {
     pub start_time: i64,
     pub end_time: i64,

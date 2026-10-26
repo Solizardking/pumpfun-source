@@ -1,11 +1,11 @@
 {
   "scope": "Three official IDLs plus 25 currently identified Mayhem handlers; bounded status is not exhaustive semantic equivalence.",
   "counts": {
-    "bounded_implementation": 140,
+    "bounded_implementation": 142,
     "partial": 5,
-    "unrecovered": 5
+    "unrecovered": 3
   },
-  "bounded_handler_percent": 93.33333333333333,
+  "bounded_handler_percent": 94.66666666666667,
   "whole_core_binaries_equal": 0,
   "whole_core_binaries_total": 4,
   "security_audit_complete": false,
@@ -45,9 +45,9 @@
     {
       "program": "pump",
       "instruction": "admin_update_token_incentives",
-      "status": "unrecovered",
+      "status": "bounded_implementation",
       "limitation": null,
-      "candidate_artifact": "repro/pump/final-error-metadata-fortyeight/candidate.so",
+      "candidate_artifact": "repro/pump/incentives-composite/candidate.so",
       "full_byte_equality": false
     },
     {
@@ -117,9 +117,9 @@
     {
       "program": "pump",
       "instruction": "claim_token_incentives",
-      "status": "unrecovered",
+      "status": "bounded_implementation",
       "limitation": null,
-      "candidate_artifact": "repro/pump/final-error-metadata-fortyeight/candidate.so",
+      "candidate_artifact": "repro/pump/incentives-composite/candidate.so",
       "full_byte_equality": false
     },
     {
