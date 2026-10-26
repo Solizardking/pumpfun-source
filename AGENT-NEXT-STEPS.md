@@ -6,12 +6,15 @@ stands and how to take the next lanes. Read it fully before starting.
 
 ## Where things stand (2026-10-26)
 
-- `main` contains everything below. Counts in `repro/completion.json`:
+- **Landing status:** the bounded-handler work below lives on the branch
+  `rea/bounded-incentives-create-config`, pending PR merge. Until that PR
+  lands, `main`'s `repro/completion.json` still reads **140 bounded /
+  5 partial / 5 unrecovered**; this branch carries the updated accounting:
   **143 bounded / 5 partial / 2 unrecovered of 150 handlers; 0/4 whole
   binaries byte-identical.** Bounded means: signed LiteSVM differential
   receipts against the captured original ELF — nothing else counts.
-- Just landed (study these checkpoints before starting; they are the
-  template for yours):
+- Just landed on this branch (study these checkpoints before starting;
+  they are the template for yours):
   - Pump `admin_update_token_incentives` + `claim_token_incentives` —
     `repro/pump/incentives-composite/` (candidate `d4e22cd5…`; admin 98/98,
     claim 60/60, admin→claim composition 3/3, quote-control 507/507,
@@ -122,6 +125,12 @@ Owner: _(unclaimed — write your name + date here, in your branch, first)_
    fine), message subject naming the handler + outcome, body with the
    numbers. Push your branch when the checkpoint is complete; merges to
    `main` happen after review, `--no-ff`, one lane at a time.
+10. **Landing convention:** this repo lands work by pull request against
+    `main` (see the recent PRs #60–#70). The branch
+    `rea/bounded-incentives-create-config` is the vehicle for the
+    incentives + create_config accounting described above — open the PR
+    from it rather than pushing to `main` directly. The same applies to
+    your lane: branch, push, PR.
 
 ## Report format (when you finish a lane)
 
