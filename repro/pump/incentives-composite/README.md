@@ -21,6 +21,15 @@ The captured original is 10,485,715 bytes, SHA-256
 difference at byte 24, 912,723 differing positions in the shared length.
 Whole-file equality is false.
 
+> **Candidate superseded — see "Post-drift rerun (2026-10-26)" at the end of
+> this file.** The `candidate.so` in this package is now the post-drift
+> rebuild (1,642,400 bytes, SHA-256
+> `d9f1ba066f9293bbbe407c361f3be4922c578509b7dcf8cb97a9037dd2b3c9a1`), and all
+> three incentives suites plus both inherited regressions were rerun against
+> it with full matches. The sections below describe the original pre-drift
+> run; its receipts are unchanged and the pre-drift candidate remains in git
+> history at the commit that introduced this package.
+
 ## Source change made during the build
 
 The ported claim handler referenced `PumpError::ReconstructionBranchUnsupported`,
@@ -107,3 +116,63 @@ candidates, not this one.
 `repro/status.json` was intentionally not edited: its Pump entry still binds
 the prior main checkpoint candidate, and this composite does not replace that
 binding.
+
+## Post-drift rerun (2026-10-26)
+
+This package was ported onto the current `origin/main` tree (branch
+`rea/bounded-incentives-create-config`). Between the pre-drift base and
+`origin/main`, upstream changed exactly one of the 40 build-bound Pump source
+files: `programs/pump/src/admin_cto.rs` (4 lines — raw `err()` codes replaced
+by named `PumpError` variants carrying pubkeys, an added native-mint
+quote-mint rejection, and an added holder-key creator check). Verified two
+ways: the source-hash table in
+[post-drift-rerun-2026-10-26/build-comparison.json](post-drift-rerun-2026-10-26/build-comparison.json)
+differs from the pre-drift `build-comparison.json` in that file only, and a
+direct diff of the file against the old base shows the same change. A rebuild
+of the ported tree with the identical v1.44 recipe therefore cannot be
+byte-identical to the pre-drift candidate: it produces a 1,642,400-byte
+candidate (+1,104 bytes), SHA-256
+`d9f1ba066f9293bbbe407c361f3be4922c578509b7dcf8cb97a9037dd2b3c9a1`, first
+difference vs the captured original at byte 24, 913,409 differing positions
+in the shared length. The rebuild was reproduced independently twice with
+identical output. `candidate.so` in this package is now that binary.
+
+All three incentives suites were rerun against the rebuilt candidate versus
+the same captured original, with unchanged fixtures, case sets and expected
+values (receipts in
+[post-drift-rerun-2026-10-26/](post-drift-rerun-2026-10-26/)):
+
+| Suite | Cases | Result |
+| --- | ---: | --- |
+| `admin_update_token_incentives` | 98 | **98 matched** — 43 successes, 55 rollbacks |
+| `claim_token_incentives` | 60 | **60 matched** — 48 successes, 12 rollbacks |
+| Admin→claim composition | 3 | **3 matched** — payouts 200 / 0 / 200 |
+
+- Admin: [post-drift-rerun-2026-10-26/admin-differential.json.gz](post-drift-rerun-2026-10-26/admin-differential.json.gz),
+  run with `--candidate` / `--build-comparison` pointing at the post-drift
+  build receipt (no second-build comparison this run). The independent
+  verifier **passes** on the new evidence:
+  `{"verified": true, "signed_cases": 98, "successes": 43, "rollbacks": 55}`.
+- Claim: [post-drift-rerun-2026-10-26/claim-differential.json](post-drift-rerun-2026-10-26/claim-differential.json),
+  run through the same import wrapper as the pre-drift run, repointing the
+  script's build-receipt constant at the post-drift build comparison. The
+  claim verifier still cannot target this candidate (it hard-pins the
+  historical `repro/pump/claim-token-incentives/` package); it was not run
+  and not forced, same as the pre-drift run.
+- Composition: [post-drift-rerun-2026-10-26/composition-differential.json](post-drift-rerun-2026-10-26/composition-differential.json).
+
+Extra assurance, also rerun on the rebuilt candidate:
+[post-drift-rerun-2026-10-26/quote-control-regression.json](post-drift-rerun-2026-10-26/quote-control-regression.json)
+— **507 cases, 0 mismatches** — and
+[post-drift-rerun-2026-10-26/multi-hop-regression.json](post-drift-rerun-2026-10-26/multi-hop-regression.json)
+— **56 cases, 56 passed**. The quote-control harness binds a
+`build-comparison.json` adjacent to the candidate file, so it was run
+against the byte-identical staging copy at
+`post-drift-rerun-2026-10-26/candidate.so` (kept in place so the receipt's
+bound inputs resolve); the package-root `candidate.so` is the same bytes.
+
+Conclusion: the `admin_cto.rs` drift does not leak into incentives behavior —
+every compared field (errors, post-states, events, inner CPIs, payouts)
+matches the captured original exactly as it did pre-drift.
+`repro/completion.json` carries only the candidate path for these two
+handlers (no hash), so it is unchanged; statuses and counts are untouched.
