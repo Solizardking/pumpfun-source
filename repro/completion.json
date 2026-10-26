@@ -1,11 +1,11 @@
 {
   "scope": "Three official IDLs plus 25 currently identified Mayhem handlers; bounded status is not exhaustive semantic equivalence.",
   "counts": {
-    "bounded_implementation": 142,
+    "bounded_implementation": 143,
     "partial": 5,
-    "unrecovered": 3
+    "unrecovered": 2
   },
-  "bounded_handler_percent": 94.66666666666667,
+  "bounded_handler_percent": 95.33333333333334,
   "whole_core_binaries_equal": 0,
   "whole_core_binaries_total": 4,
   "security_audit_complete": false,
@@ -549,9 +549,9 @@
     {
       "program": "pump_amm",
       "instruction": "create_config",
-      "status": "unrecovered",
+      "status": "bounded_implementation",
       "limitation": "Static-only source implementation and compiled body/context/event comparisons are present; no authentic successful initializer replay. Not counted among bounded runtime implementations; transitive targets/data and full ELF remain unmatched.",
-      "candidate_artifact": "repro/pump_amm/destination-rent-v144/candidate.so",
+      "candidate_artifact": "repro/pump_amm/create-config/candidate.so",
       "full_byte_equality": false
     },
     {

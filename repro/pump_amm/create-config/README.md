@@ -146,15 +146,13 @@ signer check is the point, is genuinely signed and ran with sigverify on.
 - Full deployed-byte equality remains false; this is bounded handler
   recovery, not historical source identity.
 
-## Proposed completion change (proposal only — NOT applied)
+## Completion change (applied on main, 2026-10-26, owner-approved merge)
 
-If this package is accepted and merged, `repro/completion.json` should
-change:
+`repro/completion.json` was updated when this package merged to main:
 
 - `pump_amm.create_config`: `unrecovered` → `bounded_implementation`
 - Counts: bounded **142 → 143**, unrecovered **3 → 2**, partial unchanged
   at 5 (remaining unrecovered: `pump.set_mayhem_virtual_params`,
   `mayhem.initialize_mayhem_state`).
 
-Neither `repro/completion.json` nor `repro/status.json` was edited by this
-work, and nothing here was committed.
+`repro/status.json` was intentionally not edited by this work.
